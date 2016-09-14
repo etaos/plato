@@ -30,6 +30,21 @@ module Plato
     @cmd_args = nil
 
     def start(args)
+      case args.shift
+      when 'app'
+        start_app(args)
+      when '-v'
+        puts "Plato #{Plato::VERSION}"
+        exit
+      else
+        puts "Usage: plato <command> <args>"
+        puts ""
+        puts "Available commands are:"
+        puts "   app\tScaffolder to create new ETA/OS applications"
+      end
+    end
+
+    def start_app(args)
       options = OpenStruct.new
       options.name = nil
       options.epath = nil
@@ -82,7 +97,7 @@ module Plato
       end
 
       parser.parse!(args)
-      options.app = true if ARGV.pop.eql? "app"
+      options.app = true
 
       mandatory = [:app, :epath, :name, :target, :libdir]
       missing = mandatory.select do |param|
