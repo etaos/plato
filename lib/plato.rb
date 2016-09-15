@@ -19,7 +19,11 @@
 require 'optparse'
 require 'optparse/time'
 require 'ostruct'
+require 'tempfile'
 require 'pp'
+require 'zip'
+
+require 'net/http'
 
 require 'plato/version'
 require 'plato/scaffolder'
@@ -33,6 +37,8 @@ module Plato
       case args.shift
       when 'app'
         start_app(args)
+      when 'get'
+        start_get(args)
       when '-v'
         puts "Plato #{Plato::VERSION}"
         exit
@@ -42,6 +48,44 @@ module Plato
         puts "Available commands are:"
         puts "   app\tScaffolder to create new ETA/OS applications"
       end
+    end
+
+    def start_get(args)
+      options = OpenStruct.new
+      options.output = Dir.pwd
+      options.target = 'stable'
+
+      parser = OptionParser.new do |opts|
+        opts.banner = "Usage: plato get [options]"
+        opts.separator ""
+        opts.separator "Specific options:"
+
+        opts.on('-o', '--output PATH',
+                'Place to dump the ETA/OS download') do |path|
+          options.output = path
+        end
+
+        opts.on('-t', '--target',
+                'Download target. Available targets are: stable, old-stable and bleeding.') do |target|
+          options.target = target
+        end
+
+        opts.separator ""
+        opts.separator "Common options:"
+
+        opts.on_tail("-h", "--help", "Show this message") do
+          puts opts
+          exit
+        end
+
+        opts.on_tail("-v", "--version", "Print the Plato version") do
+          puts "Plato #{Plato::VERSION}"
+          exit
+        end
+      end
+
+      parser.parse!
+      Plato.download(options.output, options.target)
     end
 
     def start_app(args)
@@ -120,6 +164,32 @@ module Plato
       rescue ApplicationAlreadyExistsError => e
         puts "Error: #{e.message}"
         exit
+      end
+    end
+
+    def download(out, target)
+      # The correct git refs for the target can be found using the Plato
+      # web service (plato.bietje.net).
+      uri = URI("http://plato.bietje.net/#{target}.txt")
+      ref = Net::HTTP.get(uri)
+      uri = URI("https://git.bietje.net/etaos/etaos/repository/archive.zip?ref=#{ref}")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+
+      request = Net::HTTP::Get.new(uri.request_uri)
+      response = http.request(request)
+      zip = Tempfile.new("etaos-#{ref}.zip", Dir.tmpdir, 'wb+')
+      zip.binmode
+      zip.write(response.body)
+      path = zip.path
+      zip.close
+
+      Zip::File.open(path) do |zip_file|
+        zip_file.each do |f|
+          f_path = File.join(out, f.name)
+          FileUtils.mkdir_p(File.dirname(f_path))
+          zip_file.extract(f, f_path) unless File.exist?(f_path)
+        end
       end
     end
   end
