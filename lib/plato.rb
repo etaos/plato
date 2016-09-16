@@ -40,11 +40,15 @@ module Plato
       when '-v'
         puts "Plato #{Plato::VERSION}"
         exit
+      when '--version'
+        puts "Plato #{Plato::VERSION}"
+        exit
       else
         puts "Usage: plato <command> <args>"
         puts ""
         puts "Available commands are:"
         puts "   app\tScaffolder to create new ETA/OS applications"
+        puts "   get\tETA/OS download service"
       end
     end
 
@@ -66,6 +70,14 @@ module Plato
         opts.on('-t', '--target TARGET',
                 'Download target. Available targets are: stable, old-stable and bleeding.') do |target|
           options.target = target
+        end
+
+        opts.on('-V', '--versions',
+                'List all available ETA/OS versions.') do
+          puts "Available ETA/OS versions:"
+          puts ""
+          puts Plato.get_versions
+          exit
         end
 
         opts.separator ""
@@ -175,6 +187,11 @@ module Plato
       end
 
       ref
+    end
+
+    def get_versions
+      uri = URI("http://plato.bietje.net/versions.txt")
+      Net::HTTP.get(uri)
     end
 
     def download(out, target)
