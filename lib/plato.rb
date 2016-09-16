@@ -31,8 +31,6 @@ require 'plato/applicationalreadyexistserror'
 
 module Plato
   class << self
-    @cmd_args = nil
-
     def start(args)
       case args.shift
       when 'app'
@@ -65,7 +63,7 @@ module Plato
           options.output = path
         end
 
-        opts.on('-t', '--target',
+        opts.on('-t', '--target TARGET',
                 'Download target. Available targets are: stable, old-stable and bleeding.') do |target|
           options.target = target
         end
@@ -167,11 +165,24 @@ module Plato
       end
     end
 
+    def parse_target(target)
+      ref = target
+      odd_versions = ['stable', 'latest', 'old-stable', 'bleeding']
+
+      if odd_versions.include? target
+        uri = URI("http://plato.bietje.net/#{target}.txt")
+        ref = Net::HTTP.get(uri)
+      end
+
+      ref
+    end
+
     def download(out, target)
       # The correct git refs for the target can be found using the Plato
       # web service (plato.bietje.net).
-      uri = URI("http://plato.bietje.net/#{target}.txt")
-      ref = Net::HTTP.get(uri)
+      first = true
+      silly_name = nil
+      ref = Plato.parse_target(target)
       uri = URI("https://git.bietje.net/etaos/etaos/repository/archive.zip?ref=#{ref}")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
@@ -186,11 +197,21 @@ module Plato
 
       Zip::File.open(path) do |zip_file|
         zip_file.each do |f|
+          if first
+            silly_name = f.name
+            first = false
+          end
+
           f_path = File.join(out, f.name)
           FileUtils.mkdir_p(File.dirname(f_path))
           zip_file.extract(f, f_path) unless File.exist?(f_path)
         end
       end
+
+      # fix the silly top dir name
+      f_path = File.join(out, silly_name)
+      f_path_new = File.join(out, "etaos-#{target}")
+      FileUtils.mv f_path, f_path_new
     end
   end
 end
