@@ -15,8 +15,17 @@ Gem::Specification.new do |spec|
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "bin"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.executables   = ['plato']
   spec.require_paths = ["lib"]
+  spec.files = [
+    'bin/plato',
+    'lib/plato.rb',
+    'lib/plato/applicationalreadyexistserror.rb',
+    'lib/plato/filegenerator.rb',
+    'lib/plato/makefile.rb',
+    'lib/plato/scaffolder.rb',
+    'lib/plato/version.rb'
+  ]
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"

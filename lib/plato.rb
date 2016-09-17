@@ -37,6 +37,8 @@ module Plato
         start_app(args)
       when 'get'
         start_get(args)
+      when 'solution'
+        start_solution(args)
       when '-v'
         puts "Plato #{Plato::VERSION}"
         exit
@@ -98,12 +100,98 @@ module Plato
       Plato.download(options.output, options.target)
     end
 
+    def start_solution(args)
+      options = OpenStruct.new
+      options.name = nil
+      options.path = Dir.pwd
+      options.libdir = nil
+      options.target = nil
+      options.version = nil
+
+      parser = OptionParser.new do |opts|
+        opts.banner = "Usage: plato solution [options]"
+        opts.separator ""
+        opts.separator "Specific options:"
+
+        opts.on("-b", "--base PATH",
+                "Solution base path") do |path|
+          options.path = path || Dir.pwd
+        end
+
+        # Mandatory
+        opts.on("-n", "--name NAME",
+                "Solution name") do |name|
+          options.name = name
+        end
+
+        # Mandatory
+        opts.on("-l", "--libs PATH",
+                "Path to the ETA/OS libraries") do |path|
+          options.libdir = path
+        end
+
+        # Mandatory
+        opts.on("-t", "--target TARGET",
+                "ETA/OS target architecture") do |arch|
+          options.target = arch
+        end
+
+        opts.on("-V", "-ref VERSION",
+                "ETA/OS version (git ref) to download") do |ref|
+          options.version = ref
+        end
+
+        opts.separator ""
+        opts.separator "Common options:"
+
+        opts.on_tail("-h", "--help", "Show this message") do
+          puts opts
+          exit
+        end
+
+        opts.on_tail("-v", "--version", "Print the Plato version") do
+          puts "Plato #{Plato::VERSION}"
+          exit
+        end
+      end
+
+      parser.parse!
+
+      mandatory = [:name, :libdir, :target]
+      missing = mandatory.select do |param|
+        if options[param].nil? or options[param] == false
+          param
+        end
+      end
+
+      unless missing.empty?
+        puts "Missing mandatory options!"
+        puts ""
+        puts parser
+        exit
+      end
+
+      ref = Plato.parse_target(options.version)
+      etaos_path = "../etaos-#{ref}"
+      Plato.download(options.path, options.version)
+
+      begin
+        Dir.chdir options.name
+        scaffolder = Plato::Scaffolder.new(options.name, etaos_path,
+                                           options.libdir, options.target)
+        scaffolder.create
+        scaffolder.generate
+      rescue ApplicationAlreadyExistsError => e
+        puts "Error: #{e.message}"
+        exit
+      end
+    end
+
     def start_app(args)
       options = OpenStruct.new
       options.name = nil
       options.epath = nil
       options.app = false
-      options.name = nil
       options.libdir = nil
       options.target = nil
 
@@ -168,7 +256,8 @@ module Plato
       end
 
       begin
-        scaffolder = Plato::Scaffolder.new options
+        scaffolder = Plato::Scaffolder.new(options.name, options.epath,
+                                           options.libdir, options.target)
         scaffolder.create
         scaffolder.generate
       rescue ApplicationAlreadyExistsError => e
@@ -200,6 +289,7 @@ module Plato
       first = true
       silly_name = nil
       ref = Plato.parse_target(target)
+      ref.strip!
       uri = URI("https://git.bietje.net/etaos/etaos/repository/archive.zip?ref=#{ref}")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
@@ -227,7 +317,7 @@ module Plato
 
       # fix the silly top dir name
       f_path = File.join(out, silly_name)
-      f_path_new = File.join(out, "etaos-#{target}")
+      f_path_new = File.join(out, "etaos-#{ref}")
       FileUtils.mv f_path, f_path_new
     end
   end

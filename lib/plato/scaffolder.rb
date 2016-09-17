@@ -24,14 +24,13 @@ require 'plato/applicationalreadyexistserror'
 
 module Plato
   class Scaffolder
-    attr_reader :dirname, :etaos_path, :app
+    attr_reader :dirname, :etaos_path, :arch, :libdir
 
-    def initialize(options)
-      @dirname = options.name
-      @etaos_path = options.epath
-      @app = options.app
-      @libdir = options.libdir
-      @arch = options.target
+    def initialize(name, path, libdir, arch)
+      @dirname = name
+      @etaos_path = path
+      @libdir = libdir
+      @arch = arch
     end
 
     def create
@@ -63,7 +62,7 @@ module Plato
       gen.add_var('crurom-y', '# TODO: add crurom directory or delete this line', ':=')
       gen.add_var('crurom-obj', '# TODO: add crurom object file or delete this line', ':=')
       gen.add_var('ETAOS_LIBS', '-lc', '+=')
-      gen.add_var('ETAOS_LIB_DIR', '', ':=')
+      gen.add_var('ETAOS_LIB_DIR', @libdir, ':=')
       gen.add_var('APP_TARGET', "#{@dirname}.img", ':=')
       gen.add_var('clean-files', "#{@dirname}.img", '+=')
       gen.generate
