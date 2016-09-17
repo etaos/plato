@@ -1,14 +1,14 @@
 require 'spec_helper'
-require 'plato/makefile'
+require 'zeno/makefile'
 
-describe Plato::Makefile do
+describe Zeno::Makefile do
   it 'can be initialised' do
-    mkfile = Plato::Makefile.new 'tmp'
+    mkfile = Zeno::Makefile.new 'tmp'
     expect(mkfile).not_to be nil
   end
 
   it 'generates output as expected' do
-    mkfile = Plato::Makefile.new 'tmp'
+    mkfile = Zeno::Makefile.new 'tmp'
     expected_output = "VAR1=/some/path\nVAR2=/another/path\n\n"
     expected_output += "all:\n\tgcc -o test.o -c test.c\n\n"
 

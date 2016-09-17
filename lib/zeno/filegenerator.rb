@@ -1,5 +1,5 @@
 #
-#   Plato module
+#   Zeno module
 #   Copyright (C) 2016  Michel Megens <dev@bietje.net>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -16,42 +16,38 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require 'plato/filegenerator'
+module Zeno
+  class FileGenerator
+    attr_reader :path, :vars
 
-module Plato
-  class Makefile < Plato::FileGenerator
+    @path = nil
+    @vars = nil
+
     def initialize(path)
-      super
-      @targets = Hash.new
+      @path = path
+      @vars = Hash.new
     end
 
-    def add_target(target, rules)
-      @targets[target] = rules
+    def add_var(name, value, assign = '=')
+      @vars[name] = value
+    end
+
+    def del_var(name)
+      @vars.delete name
     end
 
     def generate
-      File.open(@path, 'w') do |makefile|
-        makefile.puts self.to_s
+      File.open(path, 'w') do |file|
+        file.puts self.to_s
       end
 
       nil
     end
 
     def to_s
-      output = super
-
-      output += "\n"
-      @targets.each do |key, value|
-        output += "#{key}:\n"
-        if value.is_a? Array
-          value.each do |e|
-            output += "\t#{e}\n"
-          end
-        else
-          output += "\t#{value}\n"
-        end
-
-        output += "\n"
+      output = ""
+      @vars.each do |key, value|
+        output += "#{key}=#{value}\n"
       end
 
       output

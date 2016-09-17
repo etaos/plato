@@ -1,5 +1,5 @@
 #
-#   Plato module
+#   Zeno module
 #   Copyright (C) 2016  Michel Megens <dev@bietje.net>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,11 +18,11 @@
 
 require 'fileutils'
 
-require 'plato/makefile'
-require 'plato/filegenerator'
-require 'plato/applicationalreadyexistserror'
+require 'zeno/makefile'
+require 'zeno/filegenerator'
+require 'zeno/applicationalreadyexistserror'
 
-module Plato
+module Zeno
   class Scaffolder
     attr_reader :dirname, :etaos_path, :arch, :libdir
 
@@ -34,7 +34,7 @@ module Plato
     end
 
     def create
-      raise Plato::ApplicationAlreadyExistsError if File.directory? @dirname
+      raise Zeno::ApplicationAlreadyExistsError if File.directory? @dirname
       FileUtils.mkdir_p @dirname
     end
 
@@ -48,7 +48,7 @@ module Plato
     def generate_mkfile
       target_rule = "@$(MAKE) -C $(ETAOS) A=#{Dir.pwd}/#{@dirname} ARCH=#{@arch} CROSS_COMPILE=#{@arch}-"
       file = "#{@dirname}/Makefile"
-      mkfile = Plato::Makefile.new file
+      mkfile = Zeno::Makefile.new file
       mkfile.add_var('ETAOS', @etaos_path)
       mkfile.add_target('all', target_rule + " app")
       mkfile.add_target('clean', target_rule + " clean")
@@ -57,7 +57,7 @@ module Plato
 
     def generate_kbuildfile
       file = "#{@dirname}/Kbuild"
-      gen = Plato::FileGenerator.new file
+      gen = Zeno::FileGenerator.new file
       gen.add_var('obj-y', '# TODO: add source files', '+=')
       gen.add_var('crurom-y', '# TODO: add crurom directory or delete this line', ':=')
       gen.add_var('crurom-obj', '# TODO: add crurom object file or delete this line', ':=')

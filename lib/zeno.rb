@@ -1,5 +1,5 @@
 #
-#   Plato module
+#   Zeno module
 #   Copyright (C) 2016  Michel Megens <dev@bietje.net>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -25,11 +25,11 @@ require 'zip'
 
 require 'net/http'
 
-require 'plato/version'
-require 'plato/scaffolder'
-require 'plato/applicationalreadyexistserror'
+require 'zeno/version'
+require 'zeno/scaffolder'
+require 'zeno/applicationalreadyexistserror'
 
-module Plato
+module Zeno
   class << self
     def start(args)
       case args.shift
@@ -40,13 +40,13 @@ module Plato
       when 'solution'
         start_solution(args)
       when '-v'
-        puts "Plato #{Plato::VERSION}"
+        puts "Zeno #{Zeno::VERSION}"
         exit
       when '--version'
-        puts "Plato #{Plato::VERSION}"
+        puts "Zeno #{Zeno::VERSION}"
         exit
       else
-        puts "Usage: plato <command> <args>"
+        puts "Usage: zeno <command> <args>"
         puts ""
         puts "Available commands are:"
         puts "   app\tScaffolder to create new ETA/OS applications"
@@ -60,7 +60,7 @@ module Plato
       options.target = 'stable'
 
       parser = OptionParser.new do |opts|
-        opts.banner = "Usage: plato get [options]"
+        opts.banner = "Usage: zeno get [options]"
         opts.separator ""
         opts.separator "Specific options:"
 
@@ -78,7 +78,7 @@ module Plato
                 'List all available ETA/OS versions.') do
           puts "Available ETA/OS versions:"
           puts ""
-          puts Plato.get_versions
+          puts Zeno.get_versions
           exit
         end
 
@@ -90,14 +90,14 @@ module Plato
           exit
         end
 
-        opts.on_tail("-v", "--version", "Print the Plato version") do
-          puts "Plato #{Plato::VERSION}"
+        opts.on_tail("-v", "--version", "Print the Zeno version") do
+          puts "Zeno #{Zeno::VERSION}"
           exit
         end
       end
 
       parser.parse!
-      Plato.download(options.output, options.target)
+      Zeno.download(options.output, options.target)
     end
 
     def start_solution(args)
@@ -109,7 +109,7 @@ module Plato
       options.version = nil
 
       parser = OptionParser.new do |opts|
-        opts.banner = "Usage: plato solution [options]"
+        opts.banner = "Usage: zeno solution [options]"
         opts.separator ""
         opts.separator "Specific options:"
 
@@ -149,8 +149,8 @@ module Plato
           exit
         end
 
-        opts.on_tail("-v", "--version", "Print the Plato version") do
-          puts "Plato #{Plato::VERSION}"
+        opts.on_tail("-v", "--version", "Print the Zeno version") do
+          puts "Zeno #{Zeno::VERSION}"
           exit
         end
       end
@@ -171,13 +171,13 @@ module Plato
         exit
       end
 
-      ref = Plato.parse_target(options.version)
+      ref = Zeno.parse_target(options.version)
       etaos_path = "../etaos-#{ref}"
-      Plato.download(options.path, options.version)
+      Zeno.download(options.path, options.version)
 
       begin
         Dir.chdir options.name
-        scaffolder = Plato::Scaffolder.new(options.name, etaos_path,
+        scaffolder = Zeno::Scaffolder.new(options.name, etaos_path,
                                            options.libdir, options.target)
         scaffolder.create
         scaffolder.generate
@@ -196,7 +196,7 @@ module Plato
       options.target = nil
 
       parser = OptionParser.new do |opts|
-        opts.banner = "Usage: plato app [options]"
+        opts.banner = "Usage: zeno app [options]"
         opts.separator ""
         opts.separator "Specific options:"
 
@@ -232,8 +232,8 @@ module Plato
           exit
         end
 
-        opts.on_tail("-v", "--version", "Print the Plato version") do
-          puts "Plato #{Plato::VERSION}"
+        opts.on_tail("-v", "--version", "Print the Zeno version") do
+          puts "Zeno #{Zeno::VERSION}"
           exit
         end
       end
@@ -256,7 +256,7 @@ module Plato
       end
 
       begin
-        scaffolder = Plato::Scaffolder.new(options.name, options.epath,
+        scaffolder = Zeno::Scaffolder.new(options.name, options.epath,
                                            options.libdir, options.target)
         scaffolder.create
         scaffolder.generate
@@ -271,7 +271,7 @@ module Plato
       odd_versions = ['stable', 'latest', 'old-stable', 'bleeding']
 
       if odd_versions.include? target
-        uri = URI("http://plato.bietje.net/#{target}.txt")
+        uri = URI("http://zeno.bietje.net/#{target}.txt")
         ref = Net::HTTP.get(uri)
       end
 
@@ -279,16 +279,16 @@ module Plato
     end
 
     def get_versions
-      uri = URI("http://plato.bietje.net/versions.txt")
+      uri = URI("http://zeno.bietje.net/versions.txt")
       Net::HTTP.get(uri)
     end
 
     def download(out, target)
-      # The correct git refs for the target can be found using the Plato
-      # web service (plato.bietje.net).
+      # The correct git refs for the target can be found using the Zeno
+      # web service (zeno.bietje.net).
       first = true
       silly_name = nil
-      ref = Plato.parse_target(target)
+      ref = Zeno.parse_target(target)
       ref.strip!
       uri = URI("https://git.bietje.net/etaos/etaos/repository/archive.zip?ref=#{ref}")
       http = Net::HTTP.new(uri.host, uri.port)

@@ -1,3 +1,3 @@
-module Plato
+module Zeno
   VERSION = "0.0.1"
 end

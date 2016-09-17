@@ -1,5 +1,5 @@
 #
-#   Plato module
+#   Zeno module
 #   Copyright (C) 2016  Michel Megens <dev@bietje.net>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -16,17 +16,45 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-module Plato
-  class ApplicationAlreadyExistsError < StandardError
-    attr_reader :msg
+require 'zeno/filegenerator'
 
-    @msg = nil
-    def initialize(msg = nil)
-      @msg = msg || "The requested application name already exists!"
+module Zeno
+  class Makefile < Zeno::FileGenerator
+    def initialize(path)
+      super
+      @targets = Hash.new
     end
 
-    def message
-      @msg
+    def add_target(target, rules)
+      @targets[target] = rules
+    end
+
+    def generate
+      File.open(@path, 'w') do |makefile|
+        makefile.puts self.to_s
+      end
+
+      nil
+    end
+
+    def to_s
+      output = super
+
+      output += "\n"
+      @targets.each do |key, value|
+        output += "#{key}:\n"
+        if value.is_a? Array
+          value.each do |e|
+            output += "\t#{e}\n"
+          end
+        else
+          output += "\t#{value}\n"
+        end
+
+        output += "\n"
+      end
+
+      output
     end
   end
 end

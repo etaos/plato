@@ -1,5 +1,5 @@
 #
-#   Plato module
+#   Zeno module
 #   Copyright (C) 2016  Michel Megens <dev@bietje.net>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -16,41 +16,17 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-module Plato
-  class FileGenerator
-    attr_reader :path, :vars
+module Zeno
+  class ApplicationAlreadyExistsError < StandardError
+    attr_reader :msg
 
-    @path = nil
-    @vars = nil
-
-    def initialize(path)
-      @path = path
-      @vars = Hash.new
+    @msg = nil
+    def initialize(msg = nil)
+      @msg = msg || "The requested application name already exists!"
     end
 
-    def add_var(name, value, assign = '=')
-      @vars[name] = value
-    end
-
-    def del_var(name)
-      @vars.delete name
-    end
-
-    def generate
-      File.open(path, 'w') do |file|
-        file.puts self.to_s
-      end
-
-      nil
-    end
-
-    def to_s
-      output = ""
-      @vars.each do |key, value|
-        output += "#{key}=#{value}\n"
-      end
-
-      output
+    def message
+      @msg
     end
   end
 end

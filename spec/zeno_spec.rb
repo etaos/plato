@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Plato do
+describe Zeno do
   it 'has a version number' do
-    expect(Plato::VERSION).not_to be nil
+    expect(Zeno::VERSION).not_to be nil
   end
 end

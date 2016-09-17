@@ -1,6 +1,6 @@
-# Plato
+# Zeno
 
-Plato is the scaffolder for ETA/OS. It is an application which can be used
+Zeno is the scaffolder for ETA/OS. It is an application which can be used
 by developers to quickly generate new ETA/OS projects (i.e. setup a quick
 project structure).
 
@@ -9,7 +9,7 @@ project structure).
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'plato'
+gem 'zeno'
 ```
 
 And then execute:
@@ -18,19 +18,19 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install plato
+    $ gem install zeno
 
 ## Usage
 
 To generate a new ETA/OS application run:
 
 ```bash
-plato app --root ../relative/path/to/etaos <application-name>
+zeno app --root ../relative/path/to/etaos <application-name>
 ```
 
 If you want to read the full usage documentation, run
 ```bash
-plato --help
+zeno --help
 ```
 
 ## Development
@@ -48,7 +48,7 @@ push git commits and tags, and push the `.gem` file to
 ## Contributing
 
 Bug reports and pull requests are welcome on [GitLab](git.bietje.net) at
-https://git.bietje.net/etaos/plato. This project is intended to be a safe,
+https://git.bietje.net/etaos/zeno. This project is intended to be a safe,
 welcoming space for collaboration, and contributors are expected to adhere to
 the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 

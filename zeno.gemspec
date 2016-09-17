@@ -1,30 +1,30 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'plato/version'
+require 'zeno/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "plato"
-  spec.version       = Plato::VERSION
+  spec.name          = "zeno"
+  spec.version       = Zeno::VERSION
   spec.authors       = ["Michel Megens"]
   spec.email         = ["dev@bietje.net"]
 
   spec.summary       = %q{ETA/OS scaffolder}
-  spec.description   = %q{Plato generates ETA/OS applications with a single command.}
-  spec.homepage      = "http://bietje.net/plato"
+  spec.description   = %q{Zeno generates ETA/OS applications with a single command.}
+  spec.homepage      = "http://bietje.net/zeno"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "bin"
-  spec.executables   = ['plato']
+  spec.executables   = ['zeno']
   spec.require_paths = ["lib"]
   spec.files = [
-    'bin/plato',
-    'lib/plato.rb',
-    'lib/plato/applicationalreadyexistserror.rb',
-    'lib/plato/filegenerator.rb',
-    'lib/plato/makefile.rb',
-    'lib/plato/scaffolder.rb',
-    'lib/plato/version.rb'
+    'bin/zeno',
+    'lib/zeno.rb',
+    'lib/zeno/applicationalreadyexistserror.rb',
+    'lib/zeno/filegenerator.rb',
+    'lib/zeno/makefile.rb',
+    'lib/zeno/scaffolder.rb',
+    'lib/zeno/version.rb'
   ]
 
   spec.add_development_dependency "bundler", "~> 1.11"

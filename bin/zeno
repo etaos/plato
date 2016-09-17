@@ -3,7 +3,7 @@
 STDOUT.sync = true
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), *%w(.. lib)))
 
-require 'plato'
+require 'zeno'
 
-Plato.start(ARGV)
+Zeno.start(ARGV)
 
