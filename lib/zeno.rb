@@ -51,6 +51,7 @@ module Zeno
         puts "Available commands are:"
         puts "   app\tScaffolder to create new ETA/OS applications"
         puts "   get\tETA/OS download service"
+        puts "   solution\tCreate an ETA/OS solution"
       end
     end
 
