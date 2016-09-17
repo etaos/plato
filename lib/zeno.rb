@@ -29,8 +29,11 @@ require 'zeno/version'
 require 'zeno/scaffolder'
 require 'zeno/applicationalreadyexistserror'
 
+# Zeno base module
 module Zeno
   class << self
+    # Start the Zeno application
+    # @param args [Array] The ARGV argument array.
     def start(args)
       case args.shift
       when 'app'
@@ -55,6 +58,8 @@ module Zeno
       end
     end
 
+    # Start the get subcommand.
+    # @param args [Array] The ARGV argument array.
     def start_get(args)
       options = OpenStruct.new
       options.output = Dir.pwd
@@ -101,6 +106,8 @@ module Zeno
       Zeno.download(options.output, options.target)
     end
 
+    # Start the solution subcommand.
+    # @param args [Array] The ARGV argument array.
     def start_solution(args)
       options = OpenStruct.new
       options.name = nil
@@ -188,6 +195,8 @@ module Zeno
       end
     end
 
+    # Start the app subcommand.
+    # @param args [Array] The ARGV argument array.
     def start_app(args)
       options = OpenStruct.new
       options.name = nil
@@ -267,6 +276,12 @@ module Zeno
       end
     end
 
+    # Parse a target string (git reference).
+    # @param target [String] Git reference to parse.
+    # @return [String] A valid git ref.
+    #
+    # Targets such as 'stable', 'old-stable' and 'bleeding' are turned into
+    # actual git refs using this method.
     def parse_target(target)
       ref = target
       odd_versions = ['stable', 'latest', 'old-stable', 'bleeding']
@@ -279,11 +294,16 @@ module Zeno
       ref
     end
 
+    # Get all available ETA/OS versions.
+    # @return [String] A list of all published ETA/OS versions.
     def get_versions
       uri = URI("http://zeno.bietje.net/versions.txt")
       Net::HTTP.get(uri)
     end
 
+    # Download a specific version of ETA/OS.
+    # @param out [String] Output directory.
+    # @param target [String] Version to download.
     def download(out, target)
       # The correct git refs for the target can be found using the Zeno
       # web service (zeno.bietje.net).
