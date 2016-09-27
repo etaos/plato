@@ -47,7 +47,7 @@ push git commits and tags, and push the `.gem` file to
 
 ## Contributing
 
-Bug reports and pull requests are welcome on [GitLab](git.bietje.net) at
+Bug reports and pull requests are welcome on [GitLab](https://git.bietje.net) at
 https://git.bietje.net/etaos/zeno. This project is intended to be a safe,
 welcoming space for collaboration, and contributors are expected to adhere to
 the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
