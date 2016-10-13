@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Zeno::VERSION
   spec.authors       = ["Michel Megens"]
   spec.email         = ["dev@bietje.net"]
+  spec.license       = 'GPLv3'
 
   spec.summary       = %q{ETA/OS scaffolder}
   spec.description   = %q{Zeno generates ETA/OS applications with a single command.}
@@ -29,5 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rubyzip", ">= 1.0.0"
+  spec.add_development_dependency "rubyzip", "~> 1.0", ">= 1.0.0"
 end
