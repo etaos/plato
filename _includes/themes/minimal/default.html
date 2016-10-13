@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+  <head>
+	<script src="https://github.com/themes/minimal/javascripts/scale.fix.js"></script>
+    <title>{{site.title}} - {{site.tagline}}</title>
+
+        <meta name="author" content="{{ site.author.name }}">
+        <link href='{{ ASSET_PATH }}/css/style.css' rel="stylesheet" media="all">
+        <link href="http://feeds.feedburner.com/{{ site.author.feedbaname }}" rel="alternate" title="{{ page.title }}" type="application/atom+xml">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+      <style>
+      header { zoom: 1.2; }
+      header h1 { margin-bottom: 5px; }
+      header h1 a { color: #494949; font-weight: bold; }
+      header h3 { margin-top: 20px; margin-bottom: 5px; }
+      header p.view { margin-bottom: 5px; }
+      header p.view small { padding-top: 2px; }
+      header ul {
+        zoom: 0.7;
+        margin-top: 25px;
+      }
+      section p { margin-top: 10px; }
+      section h1 { margin-bottom: 15px; }
+      section h2 { margin-bottom: 10px; }
+      section h2 { margin-bottom: 10px; }
+      footer { bottom: 20px; }
+      footer p { margin-bottom: 5px; }
+      .half-width {
+        float: left;
+        width: 200px;
+        list-style: none;
+        padding: 5px;
+        margin: 7px;
+        margin-bottom: 10px;
+      }
+      .half-width h4 {
+        margin-bottom: 5px;
+      }
+      .half-width ul {
+        padding-left: 0;
+      }
+      .half-width ul li {
+        list-style: inside;
+        font-size: 15px;
+      }
+      .clear-fix {
+        clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+	      <h1><a href="{{site.home-url}}">bietje.net</a></h1>
+        <p>bietje</p>
+        
+        {% for urls_hash in site.leftmenu %}
+        {% for urls in urls_hash %}
+        <p class="view"><a href="{{urls.url}}">{{urls.text-main}}<small>{{urls.text-small}}</small></a></p>
+        {% endfor %}
+        {% endfor %}
+
+		{% if {{site.is_project_page}} == true %}
+		<h3>Project Info</h3>
+			<ul>
+				<li><a href="{{site.project.download}}">Download <strong>project</strong></a></li>
+				<li><a href="{{site.project.issue}}">Report<strong>An Issue</strong></a></li>
+				<li><a href="{{site.project.browse}}">Fork On <strong>GitLab</strong></a></li>
+			</ul>
+		{% endif %}
+        
+		<h3>Follow Me On</h3>
+		<p class="view"><a href="https://github.com/bietje" target="tab">GitHub<small>If coding is your thing</small></a></p>
+		<p class="view"><a href="http://git.bietje.net" target="tab">GitLab<small>If you don't like GitHub</small></a></p>
+        <p class="view"><a href="https://twitter.com/micheeeelm" target="tab">Twitter<small>If you tweet</small></a></p>
+      </header>
+      <section id="main">
+          {{ content }}
+      </section>
+      <footer>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+  </body>
+</html>

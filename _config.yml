@@ -3,31 +3,55 @@
 permalink: /:categories/:year/:month/:day/:title 
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
-highlighter: pygments
 
-# Themes are encouraged to use these universal variables 
+roughe: true
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+# Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
-#
-title : Jekyll Bootstrap
-tagline: Site Tagline
+
+home-url: http://bietje.net
+title: bietje.net
+tagline: Michel (bietje) Megens
 author :
-  name : Name Lastname
-  email : blah@email.test
-  github : username
-  twitter : username
-  feedburner : feedname
+  name : Michel Megens
+  email : dev@bietje.net
+  github : https://github.com/bietje
+  gitlab : https://git.bietje.net
+  twitter : micheeeelm
+  feedburner :
+
+project :
+  download : https://git.bietje.net/etaos/zeno/repository/archive.tar.gz?ref=v0.1.0
+  github : https://github.com/etaos/zeno
+  gitlab : https://git.bietje.net/etaos/zeno
+  issue : https://git.bietje.net/etaos/zeno/issues/new
+
+leftmenu:
+  url1:
+    url: http://bietje.net/projects.html
+    text-main: Open source projects
+    text-small: Projects I am maintaining right now
+  url2:
+    url: http://bietje.net/supported.html
+    text-main: Projects I support
+    text-small: Stuff you might like
+  url3:
+    url: http://bietje.net/archive.html
+    text-main: Posts archive
+    text-small: Stuff I've written in the past.
 
 # The production_url is only used when full-domain names are needed
-# such as sitemap.txt 
+# such as sitemap.txt
 # Most places will/should use BASE_PATH to make the urls
 #
 # If you have set a CNAME (pages.github.com) set your custom domain here.
 # Else if you are pushing to username.github.io, replace with your username.
 # Finally if you are pushing to a GitHub project page, include the project name at the end.
 #
-production_url : http://username.github.io
-
-gems: ["jekyll-sitemap"]
+production_url : http://etaos.bietje.net/zeno
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
@@ -39,11 +63,11 @@ JB :
   # however this value will be dynamically changed depending on your deployment situation.
   #
   # CNAME (http://yourcustomdomain.com)
-  #   DO NOT SET BASE_PATH 
+  #   DO NOT SET BASE_PATH
   #   (urls will be prefixed with "/" and work relatively)
   #
   # GitHub Pages (http://username.github.io)
-  #   DO NOT SET BASE_PATH 
+  #   DO NOT SET BASE_PATH
   #   (urls will be prefixed with "/" and work relatively)
   #
   # GitHub Project Pages (http://username.github.io/project-name)
@@ -56,13 +80,13 @@ JB :
   #   - Only the following values are falsy: ["", null, false]
   #   - When setting BASE_PATH it must be a valid url.
   #     This means always setting the protocol (http|https) or prefixing with "/"
-  BASE_PATH : false
+  BASE_PATH : http://etaos.bietje.net/zeno
 
   # By default, the asset_path is automatically defined relative to BASE_PATH plus the enabled theme.
   # ex: [BASE_PATH]/assets/themes/[THEME-NAME]
   #
   # Override this by defining an absolute path to assets here.
-  # ex: 
+  # ex:
   #   http://s3.amazonaws.com/yoursite/themes/watermelon
   #   /assets
   #
@@ -94,43 +118,41 @@ JB :
       num_posts: 5
       width: 580
       colorscheme: light
-    duoshuo :
-      short_name : jekyllbootstrap
-   
+
   # Settings for analytics helper
   # Set 'provider' to the analytics provider you want to use.
   # Set 'provider' to false to turn analytics off globally.
-  #        
+  #
   analytics :
     provider : google
-    gauges :
-        site_id : 'SITE ID'
-    google : 
+    google :
         tracking_id : 'UA-123-12'
     getclicky :
-      site_id : 
+      site_id :
     mixpanel :
         token : '_MIXPANEL_TOKEN_'
     piwik :
         baseURL : 'myserver.tld/piwik' # Piwik installation address (without protocol)
         idsite : '1'                   # the id of the site on Piwik
 
-  # Settings for sharing helper. 
+  # Settings for sharing helper.
   # Sharing is for things like tweet, plusone, like, reddit buttons etc.
   # Set 'provider' to the sharing provider you want to use.
   # Set 'provider' to false to turn sharing off globally.
   #
   sharing :
     provider : false
-    
-  # Settings for all other include helpers can be defined by creating 
+
+safe: true
+is_project_page : true
+  # Settings for all other include helpers can be defined by creating
   # a hash with key named for the given helper. ex:
   #
   #   pages_list :
-  #     provider : "custom"   
+  #     provider : "custom"
   #
   # Setting any helper's provider to 'custom' will bypass the helper code
   # and include your custom code. Your custom file must be defined at:
   #   ./_includes/custom/[HELPER]
   # where [HELPER] is the name of the helper you are overriding.
-  
+
