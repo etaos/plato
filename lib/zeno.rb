@@ -311,7 +311,7 @@ module Zeno
       silly_name = nil
       ref = Zeno.parse_target(target)
       ref.strip!
-      uri = URI("https://git.bietje.net/etaos/etaos/repository/archive.zip?ref=#{ref}")
+      uri = URI("https://git.bietje.net/etaos/etaos/archive/#{ref}.tar.gz")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
 
