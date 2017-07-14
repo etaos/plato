@@ -28,7 +28,7 @@ module Zeno
 
     def initialize(name, path, libdir, arch)
       @dirname = name
-      @etaos_path = path
+      @etaos_path = "../#{path}"
       @libdir = libdir
       @arch = arch
     end

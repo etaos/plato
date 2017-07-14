@@ -184,6 +184,7 @@ module Zeno
       Zeno.download(options.path, options.version)
 
       begin
+	Dir.mkdir options.name unless File.directory? options.name
         Dir.chdir options.name
         scaffolder = Zeno::Scaffolder.new(options.name, etaos_path,
                                            options.libdir, options.target)
@@ -311,7 +312,7 @@ module Zeno
       silly_name = nil
       ref = Zeno.parse_target(target)
       ref.strip!
-      uri = URI("https://git.bietje.net/etaos/etaos/archive/#{ref}.tar.gz")
+      uri = URI("https://git.bietje.net/etaos/etaos/archive/#{ref}.zip")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
 
