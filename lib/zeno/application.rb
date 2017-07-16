@@ -1,6 +1,6 @@
 #
 #   Zeno module
-#   Copyright (C) 2016  Michel Megens <dev@bietje.net>
+#   Copyright (C) 2017  Michel Megens <dev@bietje.net>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -16,14 +16,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require 'fileutils'
-
 require 'zeno/makefile'
-require 'zeno/filegenerator'
-require 'zeno/applicationalreadyexistserror'
 
 module Zeno
-  class Scaffolder
+  class Application
     attr_reader :dirname, :etaos_path, :arch, :libdir
 
     def initialize(name, path, libdir, arch)
@@ -59,6 +55,7 @@ module Zeno
       file = "#{@dirname}/Kbuild"
       gen = Zeno::FileGenerator.new file
       gen.add_var('obj-y', '# TODO: add source files', '+=')
+      gen.add_var('pyusrlib-y', '# TODO: add python libs or delete this line', '+=')
       gen.add_var('crurom-y', '# TODO: add crurom directory or delete this line', ':=')
       gen.add_var('crurom-obj', '# TODO: add crurom object file or delete this line', ':=')
       gen.add_var('ETAOS_LIBS', '-lc', '+=')
@@ -69,4 +66,3 @@ module Zeno
     end
   end
 end
-

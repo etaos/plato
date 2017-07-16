@@ -26,7 +26,8 @@ require 'zip'
 require 'net/http'
 
 require 'zeno/version'
-require 'zeno/scaffolder'
+require 'zeno/application'
+require 'zeno/solution'
 require 'zeno/applicationalreadyexistserror'
 
 # Zeno base module
@@ -52,7 +53,7 @@ module Zeno
         puts "Usage: zeno <command> <args>"
         puts ""
         puts "Available commands are:"
-        puts "   app\t\tScaffolder to create new ETA/OS applications"
+        puts "   app\t\tApplication to create new ETA/OS applications"
         puts "   get\t\tETA/OS download service"
         puts "   solution\tCreate an ETA/OS solution"
       end
@@ -115,6 +116,7 @@ module Zeno
       options.libdir = nil
       options.target = nil
       options.version = nil
+      options.apps = nil
 
       parser = OptionParser.new do |opts|
         opts.banner = "Usage: zeno solution [options]"
@@ -137,6 +139,11 @@ module Zeno
                 "Path to the ETA/OS libraries") do |path|
           options.libdir = path
         end
+
+	opts.on("-a", "--apps APPS",
+		"List of applications to generate (comma separated") do |apps|
+	  options.apps = apps.split(',')
+	end
 
         # Mandatory
         opts.on("-t", "--target TARGET",
@@ -179,21 +186,16 @@ module Zeno
         exit
       end
 
-      ref = Zeno.parse_target(options.version)
-      etaos_path = "../etaos-#{ref}"
-      Zeno.download(options.path, options.version)
+      opts = Hash.new
+      opts['apps'] = options.apps
+      opts['name'] = options.name
+      opts['ref']  = options.version
+      opts['libs'] = options.libdir
+      opts['path'] = options.path
+      opts['target'] = options.target
 
-      begin
-	Dir.mkdir options.name unless File.directory? options.name
-        Dir.chdir options.name
-        scaffolder = Zeno::Scaffolder.new(options.name, etaos_path,
-                                           options.libdir, options.target)
-        scaffolder.create
-        scaffolder.generate
-      rescue ApplicationAlreadyExistsError => e
-        puts "Error: #{e.message}"
-        exit
-      end
+      solution = Zeno::Solution.new(opts)
+      solution.create
     end
 
     # Start the app subcommand.
@@ -267,7 +269,7 @@ module Zeno
       end
 
       begin
-        scaffolder = Zeno::Scaffolder.new(options.name, options.epath,
+        scaffolder = Zeno::Application.new(options.name, options.epath,
                                            options.libdir, options.target)
         scaffolder.create
         scaffolder.generate
