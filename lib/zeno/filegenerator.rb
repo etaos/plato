@@ -29,7 +29,7 @@ module Zeno
     end
 
     def add_var(name, value, assign = '=')
-      @vars[name] = value
+      @vars[name] = "#{assign} #{value}"
     end
 
     def del_var(name)
@@ -47,7 +47,7 @@ module Zeno
     def to_s
       output = ""
       @vars.each do |key, value|
-        output += "#{key}=#{value}\n"
+        output += "#{key} #{value}\n"
       end
 
       output
