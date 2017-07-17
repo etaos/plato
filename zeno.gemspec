@@ -23,7 +23,8 @@ Gem::Specification.new do |spec|
     'lib/zeno/applicationalreadyexistserror.rb',
     'lib/zeno/filegenerator.rb',
     'lib/zeno/makefile.rb',
-    'lib/zeno/scaffolder.rb',
+    'lib/zeno/application.rb',
+    'lib/zeno/solution.rb',
     'lib/zeno/version.rb'
   ]
 
