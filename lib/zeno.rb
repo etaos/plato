@@ -137,7 +137,7 @@ module Zeno
         # Mandatory
         opts.on("-l", "--libs PATH",
                 "Path to the ETA/OS libraries") do |path|
-          options.libdir = path
+          options.libdir = File.expand_path path
         end
 
 	opts.on("-a", "--apps APPS",
