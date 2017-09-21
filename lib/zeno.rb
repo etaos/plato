@@ -136,14 +136,14 @@ module Zeno
 
         # Mandatory
         opts.on("-l", "--libs PATH",
-                "Path to the ETA/OS libraries") do |path|
-          options.libdir = File.expand_path path
+                "Relative path to the ETA/OS libraries") do |path|
+          options.libdir = path
         end
 
-	opts.on("-a", "--apps APPS",
-		"List of applications to generate (comma separated") do |apps|
-	  options.apps = apps.split(',')
-	end
+      	opts.on("-a", "--apps APPS",
+      		"List of applications to generate (comma separated") do |apps|
+      	  options.apps = apps.split(',')
+      	end
 
         # Mandatory
         opts.on("-t", "--target TARGET",
@@ -215,7 +215,7 @@ module Zeno
 
         # Mandatory
         opts.on("-r", "--root PATH",
-                "Absolute path to ETA/OS") do |path|
+                "Path to ETA/OS") do |path|
           options.epath = path
         end
 
@@ -227,7 +227,7 @@ module Zeno
 
         # Mandatory
         opts.on("-l", "--libs PATH",
-                "Path to the ETA/OS libraries") do |path|
+                "Relative path to the ETA/OS libraries") do |path|
           options.libdir = path
         end
 
@@ -346,4 +346,3 @@ module Zeno
     end
   end
 end
-

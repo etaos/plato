@@ -25,7 +25,7 @@ module Zeno
     def initialize(name, path, libdir, arch)
       @dirname = name
       @etaos_path = "../#{path}"
-      @libdir = libdir
+      @libdir = "#{libdir}/etaos"
       @arch = arch
     end
 
@@ -42,7 +42,7 @@ module Zeno
     private
 
     def generate_mkfile
-      target_rule = "@$(MAKE) -C $(ETAOS) A=#{Dir.pwd}/#{@dirname} ARCH=#{@arch} CROSS_COMPILE=#{@arch}-"
+      target_rule = "@$(MAKE) -C $(ETAOS) A=`pwd`/#{@dirname} ARCH=#{@arch} CROSS_COMPILE=#{@arch}-"
       file = "#{@dirname}/Makefile"
       mkfile = Zeno::Makefile.new file
       mkfile.add_var('ETAOS', @etaos_path)

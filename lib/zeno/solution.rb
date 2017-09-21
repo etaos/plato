@@ -46,15 +46,14 @@ module Zeno
 
       version = Zeno.parse_target(@ref)
       etaos_path = "etaos-#{version}"
-      Zeno.download(@path, @ref)
+      Zeno.download(Dir.pwd, @ref)
 
       # Create applications
       @apps.each do |app|
-	application = Zeno::Application.new(app, etaos_path, @libs, @target)
-	application.create
-	application.generate
+      	application = Zeno::Application.new(app, etaos_path, @libs, @target)
+      	application.create
+      	application.generate
       end
     end
   end
 end
-
