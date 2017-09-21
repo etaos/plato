@@ -140,7 +140,7 @@ module Zeno
           options.libdir = path
         end
 
-      	opts.on("-a", "--apps APPS",
+      	opts.on("-a", "--apps APP1[,APP2,APPn]",
       		"List of applications to generate (comma separated") do |apps|
       	  options.apps = apps.split(',')
       	end
