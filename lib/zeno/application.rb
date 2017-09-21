@@ -46,6 +46,7 @@ module Zeno
       file = "#{@dirname}/Makefile"
       mkfile = Zeno::Makefile.new file
       mkfile.add_var('ETAOS', @etaos_path)
+      mkfile.add_var('MAKEFLAGS', '-rR --no-print-directory', '+=')
       mkfile.add_target('all', target_rule + " app")
       mkfile.add_target('clean', target_rule + " clean")
       mkfile.generate
