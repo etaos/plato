@@ -29,6 +29,7 @@ require 'zeno/version'
 require 'zeno/application'
 require 'zeno/solution'
 require 'zeno/applicationalreadyexistserror'
+require 'zeno/missingargumentexception'
 
 # Zeno base module
 module Zeno
@@ -115,7 +116,7 @@ module Zeno
       options.path = Dir.pwd
       options.libdir = nil
       options.target = nil
-      options.version = nil
+      options.version = 'stable'
       options.apps = nil
 
       parser = OptionParser.new do |opts|
@@ -172,16 +173,16 @@ module Zeno
 
       parser.parse!
 
-      mandatory = [:name, :libdir, :target]
-      missing = mandatory.select do |param|
-        if options[param].nil? or options[param] == false
-          param
-        end
-      end
+      mandatory = {
+        :name => '-n',
+        :libdir => '-l',
+        :target => '-t'
+      }
 
-      unless missing.empty?
-        puts "Missing mandatory options!"
-        puts ""
+      begin
+        Zeno.check_missing_args!(options, mandatory)
+      rescue MissingArgumentException => e
+        puts "#{e.msg}: #{e.missing_arguments.values.join(', ')}"
         puts parser
         exit
       end
@@ -255,15 +256,18 @@ module Zeno
       options.app = true
 
       mandatory = [:app, :epath, :name, :target, :libdir]
-      missing = mandatory.select do |param|
-        if options[param].nil? or options[param] == false
-          param
-        end
-      end
+      mandatory = {
+        :app => 'Critical failure',
+        :epath => '-r',
+        :name => '-n',
+        :target => '-t',
+        :libdir => '-l'
+      }
 
-      unless missing.empty?
-        puts "Missing mandatory arguments"
-        puts ""
+      begin
+        Zeno.check_missing_args!(options, mandatory)
+      rescue MissingArgumentException => e
+        puts "#{e.msg}: #{e.missing_arguments.values.join(', ')}"
         puts parser
         exit
       end
@@ -344,5 +348,20 @@ module Zeno
       f_path_new = File.join(out, "etaos-#{ref}")
       FileUtils.mv f_path, f_path_new
     end
-  end
-end
+
+    # Check if any arguments are missing.
+    # @param options [OpenStruct] Structure of the complete argument set.
+    # @param mandatory Hash of mandatory arguments
+    # @return nil
+    def check_missing_args!(options, mandatory = {})
+      return nil if mandatory.empty?
+
+      missing = mandatory.select do |param, value|
+        options[param].nil? or options[param] == false
+      end
+
+      raise Zeno::MissingArgumentException.new(missing) unless missing.empty?
+      nil
+    end
+  end # class
+end # module Zeno

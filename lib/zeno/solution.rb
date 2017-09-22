@@ -40,7 +40,7 @@ module Zeno
       raise Zeno::ApplicationAlreadyExistsError if File.directory? @path
     end
 
-    def create()
+    def create
       FileUtils.mkdir_p @path unless File.directory? @path
       Dir.chdir @path
 
