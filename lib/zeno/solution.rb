@@ -27,6 +27,7 @@ module Zeno
     @libs = nil
     @apps = nil
     @target = nil
+    @uploader = nil
 
     def initialize(opts)
       @name = opts['name']
@@ -36,6 +37,7 @@ module Zeno
       @path = "#{@basepath}/#{@name}"
       @apps = opts['apps']
       @target = opts['target']
+      @uploader = opts['uploader']
 
       raise Zeno::ApplicationAlreadyExistsError if File.directory? @path
     end
@@ -50,9 +52,9 @@ module Zeno
 
       # Create applications
       @apps.each do |app|
-      	application = Zeno::Application.new(app, etaos_path, @libs, @target)
-      	application.create
-      	application.generate
+        application = Zeno::Application.new(app, etaos_path, @libs, @target, @uploader)
+        application.create
+        application.generate
       end
     end
   end

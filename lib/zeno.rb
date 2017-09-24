@@ -118,6 +118,7 @@ module Zeno
       options.target = nil
       options.version = 'stable'
       options.apps = nil
+      options.uploader = nil
 
       parser = OptionParser.new do |opts|
         opts.banner = "Usage: zeno solution [options]"
@@ -157,6 +158,16 @@ module Zeno
           options.version = ref
         end
 
+        opts.on("-A", "--avrupload",
+                "Configure the application Makefiles to use avrupload") do |u|
+          options.uploader = :avrupload
+        end
+
+        opts.on("-d", "--avrdude",
+                "Configure the application Makefiles to use avrdude") do |a|
+          options.uploader = :avrdude
+        end
+
         opts.separator ""
         opts.separator "Common options:"
 
@@ -194,6 +205,7 @@ module Zeno
       opts['libs'] = options.libdir
       opts['path'] = options.path
       opts['target'] = options.target
+      opts['uploader'] = options.uploader
 
       solution = Zeno::Solution.new(opts)
       solution.create
@@ -208,6 +220,7 @@ module Zeno
       options.app = false
       options.libdir = nil
       options.target = nil
+      options.uploader = nil
 
       parser = OptionParser.new do |opts|
         opts.banner = "Usage: zeno app [options]"
@@ -236,6 +249,16 @@ module Zeno
         opts.on("-t", "--target TARGET",
                 "Target architecture") do |target|
           options.target = target
+        end
+
+        opts.on("-A", "--avrupload",
+                "Configure the application Makefiles to use avrupload") do |u|
+          options.uploader = :avrupload
+        end
+
+        opts.on("-d", "--avrdude",
+                "Configure the application Makefiles to use avrdude") do |a|
+          options.uploader = :avrdude
         end
 
         opts.separator ""
@@ -274,7 +297,8 @@ module Zeno
 
       begin
         scaffolder = Zeno::Application.new(options.name, options.epath,
-                                           options.libdir, options.target)
+                                           options.libdir, options.target,
+                                           options.uploader)
         scaffolder.create
         scaffolder.generate
       rescue ApplicationAlreadyExistsError => e
