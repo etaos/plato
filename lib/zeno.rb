@@ -343,14 +343,11 @@ module Zeno
       ref = Zeno.parse_target(target)
       ref.strip!
       uri = URI("https://git.bietje.net/etaos/etaos/repository/archive.zip?ref=#{ref}")
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
 
-      request = Net::HTTP::Get.new(uri.request_uri)
-      response = http.request(request)
+      response = Net::HTTP.get(uri)
       zip = Tempfile.new("etaos-#{ref}.zip", Dir.tmpdir, 'wb+')
       zip.binmode
-      zip.write(response.body)
+      zip.write(response)
       path = zip.path
       zip.close
 
