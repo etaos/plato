@@ -28,8 +28,8 @@ Gem::Specification.new do |spec|
     'lib/zeno/version.rb'
   ]
 
-  spec.add_development_dependency "bundler", "~> 1.11"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rubyzip", "~> 1.0", ">= 1.0.0"
+  spec.add_development_dependency "bundler", ">= 1.7"
+  spec.add_development_dependency "rake", ">= 10.0"
+  spec.add_development_dependency "rspec", ">= 3.0"
+  spec.add_development_dependency "rubyzip", ">= 1.0.0"
 end
