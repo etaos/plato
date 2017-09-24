@@ -24,7 +24,7 @@ author :
   feedburner :
 
 project :
-  download : https://git.bietje.net/etaos/zeno/repository/archive.tar.gz?ref=v0.1.0
+  download : https://git.bietje.net/etaos/zeno/repository/archive.tar.gz?ref=v0.2.0
   github : https://github.com/etaos/zeno
   gitlab : https://git.bietje.net/etaos/zeno
   issue : https://git.bietje.net/etaos/zeno/issues/new
